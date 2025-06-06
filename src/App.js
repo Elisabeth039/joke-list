@@ -7,12 +7,12 @@ function App() {
   const getJoke = async () => {
     try {
       const response = await fetch('https://official-joke-api.appspot.com/random_joke');
-      if (!response.ok) throw new Error('Не удалось загрузить шутку');
+      if (!response.ok) throw new Error('Failed to load a joke');
       const data = await response.json();
       const newJoke = `${data.setup} - ${data.punchline}`;
       setJokes(prevJokes => [...prevJokes, newJoke]);
     } catch (error) {
-      console.log('Ошибка:', error.message);
+      console.log('Error:', error.message);
     }
   };
 
@@ -21,15 +21,15 @@ function App() {
     while (shortJokes.length < 5 ) {
       try {
         const response = await fetch('https://official-joke-api.appspot.com/random_joke');
-        if (!response.ok) throw new Error('Не удалось загрузить шутку');
+        if (!response.ok) throw new Error('Failed to load a joke');
         const data = await response.json();
         const newJoke = `${data.setup} - ${data.punchline}`;
-        if (newJoke.length < 100) { // Только короткие шутки
+        if (newJoke.length < 100) { 
           shortJokes.push(newJoke);
         }
       } catch (error) {
-        console.log('Ошибка:', error.message);
-        break; // Выходим из цикла при ошибке
+        console.log('Error:', error.message);
+        break;
       }
     }
     setJokes(prevJokes => [...prevJokes, ...shortJokes]);
@@ -46,20 +46,20 @@ function App() {
 
   return (
     <div className="app">
-      <h1>Список шуток</h1>
+      <h1>Joke list</h1>
       <div className="button-group">
-        <button onClick={getJoke}>Получить шутку</button>
-        <button onClick={getShortJokes}>Получить 5 коротких шуток</button>
-        <button onClick={clearJokes}>Очистить</button>
+        <button onClick={getJoke}>Get 1 joke</button>
+        <button onClick={getShortJokes}>Get 5 short jokes</button>
+        <button onClick={clearJokes}>Clear</button>
       </div>
       {jokes.length === 0 ? (
-        <p>Нажми кнопку, чтобы увидеть шутку!</p>
+        <p>Press to see a joke!</p>
       ) : (
         <ul>
           {jokes.map((joke, index) => (
             <li key={index}>
               <span>{joke}</span>
-              <button onClick={() => deleteJoke(index)}>Удалить</button>
+              <button onClick={() => deleteJoke(index)}>Delete</button>
             </li>
           ))}
         </ul>
